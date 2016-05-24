@@ -15,9 +15,9 @@ class Main {
     }
 
     static def simple1() {
-        def actorSystem = ActorSystem.create("simple1")
-        def configuration = new Configuration(new Yaml().load(new FileReader(new File("etc.example/processes/simple1.yml"))))
-        BasicProcess.setup(actorSystem,configuration)
+        ContextHolder.actorSystem = ActorSystem.create("simple1")
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/simple1.yml'))))
+        BasicProcess.setup(ContextHolder.actorSystem,configuration)
     }
 
  }
