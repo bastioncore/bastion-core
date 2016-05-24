@@ -1,0 +1,26 @@
+id: simple1
+type: basic
+components:
+  - id: in
+    type: entry
+    bean: consoleEntry
+    converters:
+      out: jsonToDataConverter
+    next: arraySplitter
+
+  - id: arraySplitter
+    type: transformer
+    bean: dataSplitter
+    next: adder
+
+  - id: adder
+    type: transformer
+    bean: spelTransformer
+    instances: 2
+    configuration:
+      spel: "new Integer(content)+1"
+    next: out
+
+  - id: out
+    type: sink
+    bean: consoleSink
