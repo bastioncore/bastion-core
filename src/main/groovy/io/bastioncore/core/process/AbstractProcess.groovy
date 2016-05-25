@@ -3,6 +3,7 @@ import akka.actor.*
 import akka.japi.Function
 import akka.routing.Broadcast
 import akka.routing.RoundRobinPool
+import akka.routing.RoutedActorRef
 import io.bastioncore.core.ActorCreator
 import io.bastioncore.core.Configuration
 import io.bastioncore.core.components.AbstractComponent
@@ -24,6 +25,8 @@ abstract class AbstractProcess extends UntypedActor{
 
     static final Logger log = LoggerFactory.getLogger(AbstractProcess.class)
 
+    LinkedList<ActorRef> components = new LinkedList<ActorRef>()
+
     public AbstractProcess(){
         super()
         supervisorStrategy = new OneForOneStrategy(10,Duration.create("1 minute"), new Function<Throwable, SupervisorStrategy.Directive>(){
@@ -44,9 +47,16 @@ abstract class AbstractProcess extends UntypedActor{
             this.configuration = message
             log.info('Configuring process : '+self().path())
             message.components.each {
-                final ActorRef ref = setupChild(new Configuration(it))
+                ActorRef ref = createChild(new Configuration(it))
+                components.add(ref)
                 if(it.type == 'entry')
                     entry = ref
+            }
+            for(int i=0;i<components.size();i++){
+                if(components[i] instanceof RoutedActorRef)
+                    components[i].tell(new Broadcast(new Configuration(configuration.components[i])),self())
+                if(components[i] instanceof LocalActorRef)
+                    components[i].tell(new Configuration(configuration.components[i]),self())
             }
         }
         if(message instanceof DefaultMessage) {
@@ -65,20 +75,16 @@ abstract class AbstractProcess extends UntypedActor{
         return self().path().toString()
     }
 
-    public ActorRef setupChild(Configuration configuration){
+    public def createChild(Configuration configuration){
         if (this.configuration.type=='bidirectional')
             configuration.bidirectional = true
         final Integer instances = configuration.instances
-
         ActorRef ref
-        if (instances == null || instances == 1) {
+        if (instances == null || instances == 1)
             ref = context().actorOf(Props.create(new ActorCreator<AbstractComponent>(configuration.bean)), configuration.id)
-            ref.tell(new Configuration(configuration),self())
-        }
-        else {
+        else
             ref = context().actorOf(new RoundRobinPool(instances).withSupervisorStrategy(supervisorStrategy).props(Props.create(new ActorCreator(configuration.bean))), configuration.id)
-            ref.tell(new Broadcast(new Configuration(configuration)),self())
-        }
         return ref
     }
+
 }

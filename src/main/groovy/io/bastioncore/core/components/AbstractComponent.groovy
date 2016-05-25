@@ -20,6 +20,8 @@ abstract class AbstractComponent extends UntypedActor {
 
     static final Logger log = LoggerFactory.getLogger(AbstractComponent.class)
 
+    ActorSelection nextActor
+
 
     String getNextPath(){
         return getPath(processPath,configuration.next)
@@ -37,6 +39,7 @@ abstract class AbstractComponent extends UntypedActor {
         if (message instanceof Configuration){
             this.configuration = message
             processPath = sender().path().toString()
+            initNextActor()
             log.debug('Configuring component '+getPath())
         }
         if (message instanceof DefaultMessage) {
@@ -52,6 +55,12 @@ abstract class AbstractComponent extends UntypedActor {
 
     abstract DefaultMessage process(DefaultMessage message)
 
+    void initNextActor(){
+        String next = getNextPath()
+        if(next != END_ID)
+            nextActor = context().actorSelection(next)
+    }
+
     boolean sendToNext(DefaultMessage message){
         final String next = getNextPath()
         return send(next,message)
@@ -64,6 +73,8 @@ abstract class AbstractComponent extends UntypedActor {
         return send(path,message,sender)
     }
 
+
+
     boolean isEntry(){
         return configuration.type=='entry'
     }
@@ -73,8 +84,7 @@ abstract class AbstractComponent extends UntypedActor {
     }
 
     boolean send(String path, DefaultMessage message, ActorRef sender){
-        if( path != END_ID ) {
-            final ActorSelection nextActor = context().actorSelection(path)
+        if( nextActor ) {
             nextActor.tell(convert('out',message), sender)
             return true
         }
@@ -84,7 +94,7 @@ abstract class AbstractComponent extends UntypedActor {
     def convert(String stage,DefaultMessage message){
        AbstractConverter abstractConverter = getConverter(stage)
        if(abstractConverter != null)
-            message = new DefaultMessage(message.context,abstractConverter.convert(message.content))
+            message = new DefaultMessage(abstractConverter.convert(message.content), message.context)
         return message
     }
 

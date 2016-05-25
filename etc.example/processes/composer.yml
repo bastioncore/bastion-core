@@ -1,0 +1,18 @@
+id: composer
+type: basic
+components:
+  - id: in
+    type: entry
+    bean: consoleEntry
+    next: composer
+
+  - id: composer
+    type: composer
+    bean: bufferComposer
+    configuration:
+      size: 3
+    next: out
+
+  - id: out
+    type: sink
+    bean: consoleSink

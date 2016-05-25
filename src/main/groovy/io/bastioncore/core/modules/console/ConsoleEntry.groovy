@@ -45,7 +45,7 @@ class ConsoleEntry extends AbstractEntry implements Bidirectionable{
         void run() {
             while(!stop) {
                 String line = System.in.newReader().readLine()
-                self().tell(new DefaultMessage(new Context(), line),null)
+                self().tell(new DefaultMessage(line, new Context()),null)
             }
         }
     }

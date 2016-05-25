@@ -13,7 +13,7 @@ class DataSplitter extends AbstractSplitter {
     DefaultMessage process(DefaultMessage message) {
         def data = message.content
         data.each {
-            sendToNext(new DefaultMessage(message.context,it))
+            sendToNext(new DefaultMessage(it, message.context))
         }
         return null
     }

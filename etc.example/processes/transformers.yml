@@ -1,0 +1,30 @@
+id: transformers
+type: basic
+components:
+  - id: in
+    type: entry
+    bean: consoleEntry
+    next: transformer1
+
+  - id: transformer1
+    type: transformer
+    bean: spelTransformer
+    configuration:
+      spel: "content+' spel'"
+    next: transformer2
+
+  - id: transformer2
+    type: transformer
+    bean: groovyTransformer
+    configuration:
+      groovy: |
+                String c2 = ''
+                content.each {
+                  c2 += it+' '
+                }
+                return c2
+    next: out
+
+  - id: out
+    type: sink
+    bean: consoleSink

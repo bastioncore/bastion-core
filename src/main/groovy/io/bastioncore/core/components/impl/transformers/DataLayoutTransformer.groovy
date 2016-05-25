@@ -44,6 +44,6 @@ class DataLayoutTransformer extends AbstractTransformer {
         context.setVariable('content',message.content)
         context.setVariable('context',message.context)
         String data = templateEngine.process(layout,context)
-        return new DefaultMessage(message.context,data)
+        return new DefaultMessage(data, message.context)
     }
 }

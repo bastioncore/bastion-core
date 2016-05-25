@@ -15,7 +15,7 @@ class JsonToData extends AbstractTransformer {
     @Override
     DefaultMessage process(DefaultMessage message) {
         def data = deserialize( message.content )
-        return new DefaultMessage(message.context,data)
+        return new DefaultMessage(data, message.context)
     }
 
     public static def deserialize(def data){

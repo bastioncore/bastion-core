@@ -12,7 +12,7 @@ class DataToJson extends AbstractTransformer {
 
     @Override
     DefaultMessage process(DefaultMessage message) {
-        return new DefaultMessage(message.context, serialize(message.content))
+        return new DefaultMessage(serialize(message.content), message.context)
     }
 
     public static def serialize(def data){

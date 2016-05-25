@@ -24,6 +24,6 @@ class SpelTransformer extends AbstractTransformer {
     @Override
     DefaultMessage process(DefaultMessage message) {
         EvaluationContext context = new StandardEvaluationContext(message);
-        return new DefaultMessage(message.context,expression.getValue(context))
+        return new DefaultMessage(expression.getValue(context), message.context)
     }
 }

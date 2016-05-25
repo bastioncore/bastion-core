@@ -1,0 +1,25 @@
+id: flow_control
+type: basic
+components:
+  - id: in
+    type: entry
+    bean: basicEntry
+    next: transformer1
+
+  - id: transformer1
+    type: transformer
+    bean: groovyTransformer
+    instances: 5
+    configuration:
+       groovy: |
+                      String c2 = ''
+                      content.each {
+                        c2 += it+' '
+                      }
+                      return c2
+    next: out
+
+  - id: out
+    instances: 2
+    type: sink
+    bean: consoleSink

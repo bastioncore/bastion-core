@@ -30,7 +30,7 @@ abstract class AbstractScheduledEntry extends AbstractEntry implements Schedulab
         cancellable = scheduler.schedule(delayObject,
                                             intervalObject,
                                             self(),
-                                            new DefaultMessage(new Context(),CONTENT_TICK),
+                                            new DefaultMessage(CONTENT_TICK, new Context()),
                                             context().dispatcher(), self())
     }
 

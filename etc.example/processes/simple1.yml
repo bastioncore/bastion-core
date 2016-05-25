@@ -1,22 +1,29 @@
+# Receives a JSON array of integers wrapped in strings, splits them in seperate data items converts them into integers
+# adding 1, and prints them in the console
 id: simple1
 type: basic
 components:
   - id: in
     type: entry
     bean: consoleEntry
+    # converters allow you to perform conversions right in the component, without the need to add a specific component
     converters:
       out: jsonToDataConverter
     next: arraySplitter
 
+    # as data gets in (either an array or a map) it splits the inner items in seperate messages
   - id: arraySplitter
     type: transformer
     bean: dataSplitter
     next: adder
 
+    # we run some random spEL operation here
   - id: adder
     type: transformer
     bean: spelTransformer
+    # we want two instances of this component to parallelize the work
     instances: 2
+    # the configuration object contains data that is specific to the component
     configuration:
       spel: "new Integer(content)+1"
     next: out
