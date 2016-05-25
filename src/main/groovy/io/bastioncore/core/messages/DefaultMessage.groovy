@@ -20,6 +20,6 @@ class DefaultMessage implements Cloneable,Serializable {
         def c = content
         if( content instanceof Cloneable )
             c = c.clone()
-        return new DefaultMessage(context.clone(),c)
+        return new DefaultMessage(c,context.clone())
     }
 }
