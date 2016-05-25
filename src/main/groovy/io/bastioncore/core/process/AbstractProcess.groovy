@@ -32,7 +32,10 @@ abstract class AbstractProcess extends UntypedActor{
         supervisorStrategy = new OneForOneStrategy(10,Duration.create("1 minute"), new Function<Throwable, SupervisorStrategy.Directive>(){
             @Override
             SupervisorStrategy.Directive apply(Throwable param) throws Exception {
-                return OneForOneStrategy.resume()
+                if(param instanceof ActorInitializationException)
+                    return OneForOneStrategy.stop()
+                else
+                    return OneForOneStrategy.resume()
             }
         });
     }
