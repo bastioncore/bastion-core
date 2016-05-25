@@ -22,6 +22,8 @@ abstract class AbstractComponent extends UntypedActor {
 
     ActorSelection nextActor
 
+    AbstractConverter inConverter, outConverter
+
 
     String getNextPath(){
         return getPath(processPath,configuration.next)
@@ -40,6 +42,7 @@ abstract class AbstractComponent extends UntypedActor {
             this.configuration = message
             processPath = sender().path().toString()
             initNextActor()
+            initConverters()
             log.debug('Configuring component '+getPath())
         }
         if (message instanceof DefaultMessage) {
@@ -59,6 +62,15 @@ abstract class AbstractComponent extends UntypedActor {
         String next = getNextPath()
         if(next != END_ID)
             nextActor = context().actorSelection(next)
+    }
+
+    void initConverters(){
+        String inId = configuration.converters?.in
+        String outId = configuration.converters?.out
+        if(inId)
+            inConverter = ContextHolder.applicationContext.getBean(inId)
+        if(outId)
+            outConverter = ContextHolder.applicationContext.getBean(outId)
     }
 
     boolean sendToNext(DefaultMessage message){
@@ -91,28 +103,21 @@ abstract class AbstractComponent extends UntypedActor {
         return false
     }
 
-    def convert(String stage,DefaultMessage message){
-       AbstractConverter abstractConverter = getConverter(stage)
-       if(abstractConverter != null)
-            message = new DefaultMessage(abstractConverter.convert(message.content), message.context)
-        return message
-    }
-
-    AbstractConverter getConverter(String stage){
-        AbstractConverter converter
+    DefaultMessage convert(String stage,DefaultMessage message){
+        def content = message.content
         switch (stage){
             case 'in':
-                String id = configuration.converters?.in
-                if (id)
-                    converter = ContextHolder.applicationContext.getBean(id)
+                if (inConverter)
+                    content = inConverter.convert(content)
+                else
+                    return message
                 break
             case 'out':
-                String id = configuration.converters?.out
-                if (id)
-                    converter = ContextHolder.applicationContext.getBean(id)
+                if (outConverter)
+                    content = outConverter.convert(content)
                 break
         }
-        return converter
+        return new DefaultMessage(content,message.context)
     }
 
 }
