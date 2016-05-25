@@ -23,7 +23,7 @@ class BGroovy {
     public Script parse(String script){
         final String signature = 'g_'+DigestUtils.sha256Hex(script.bytes)
         Class theClass
-        try { groovyShell.classLoader.loadClass(signature) }
+        try { theClass = groovyShell.classLoader.loadClass(signature) }
         catch (Exception e){ theClass = groovyShell.classLoader.parseClass(script,signature)}
         return theClass.newInstance()
     }
