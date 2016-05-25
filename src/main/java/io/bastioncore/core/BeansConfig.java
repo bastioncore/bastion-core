@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @Configuration
-@ComponentScan(basePackages = "io.bastioncore.core")
+@ComponentScan(basePackages = {"io.bastioncore"})
 class BeansConfig {
 }
