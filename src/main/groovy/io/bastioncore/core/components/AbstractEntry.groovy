@@ -1,5 +1,6 @@
 package io.bastioncore.core.components
 
+import akka.actor.ActorRef
 import akka.actor.ActorSelection
 import akka.pattern.Patterns
 import akka.util.Timeout
@@ -32,16 +33,15 @@ abstract class AbstractEntry extends AbstractComponent {
             super.onReceive(message)
         if (Messages.PAUSE_ENTRY == message) {
             paused = !paused
-            AbstractComponent.log.debug(getPath()+' pause toggle: '+paused)
+            log.debug(getPath()+' pause toggle: '+paused)
         }
     }
-
-    boolean send(String path, DefaultMessage message){
-        return send(path,message,self())
+    ActorRef getProperSender(){
+       return self()
     }
 
     void ask(String path, DefaultMessage message){
-        AbstractComponent.log.debug(getPath()+' asking process')
+        log.debug(getPath()+' asking process')
         final ActorSelection nextActor = context().actorSelection(path)
         final String timeout = configuration.configuration.timeout
         final FiniteDuration duration = Duration.create(timeout)

@@ -79,10 +79,15 @@ abstract class AbstractComponent extends UntypedActor {
     }
 
     boolean send(String path, DefaultMessage message){
+        ActorRef sender = getProperSender()
+        return send(path,message,sender)
+    }
+
+    ActorRef getProperSender(){
         ActorRef sender = self()
         if(configuration.bidirectional && !isEntry())
             sender = getSender()
-        return send(path,message,sender)
+        return sender
     }
 
 
