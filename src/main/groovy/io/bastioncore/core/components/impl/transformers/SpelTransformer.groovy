@@ -1,6 +1,6 @@
 package io.bastioncore.core.components.impl.transformers
 
-import io.bastioncore.core.spel.BSpel
+import io.bastioncore.core.scripting.BSpel
 import io.bastioncore.core.Configuration
 import io.bastioncore.core.components.AbstractTransformer
 import io.bastioncore.core.messages.DefaultMessage

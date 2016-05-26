@@ -2,7 +2,7 @@ package io.bastioncore.core.components.impl.hubs
 
 import io.bastioncore.core.components.AbstractHub
 import io.bastioncore.core.messages.DefaultMessage
-import io.bastioncore.core.spel.BSpel
+import io.bastioncore.core.scripting.BSpel
 import org.springframework.context.annotation.Scope
 import org.springframework.expression.EvaluationContext
 import org.springframework.expression.Expression

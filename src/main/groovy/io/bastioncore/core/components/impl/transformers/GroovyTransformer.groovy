@@ -1,8 +1,10 @@
 package io.bastioncore.core.components.impl.transformers
 import io.bastioncore.core.Configuration
 import io.bastioncore.core.components.AbstractTransformer
-import io.bastioncore.core.groovy.BGroovy
+
 import io.bastioncore.core.messages.DefaultMessage
+import io.bastioncore.core.scripting.BGroovy
+import io.bastioncore.core.scripting.BSpel
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 

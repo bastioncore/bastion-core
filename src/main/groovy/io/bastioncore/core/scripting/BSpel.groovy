@@ -1,11 +1,10 @@
-package io.bastioncore.core.spel
+package io.bastioncore.core.scripting
 
 import groovy.transform.CompileStatic
-import org.apache.commons.codec.digest.DigestUtils
+import io.bastioncore.core.Utils
 import org.springframework.expression.Expression
 import org.springframework.expression.ExpressionParser
 import org.springframework.expression.spel.standard.SpelExpressionParser
-
 
 @CompileStatic
 class BSpel extends HashMap<String,Expression> {
@@ -25,7 +24,7 @@ class BSpel extends HashMap<String,Expression> {
     }
 
     public Expression parse(String script){
-        final String signature = DigestUtils.sha256Hex(script.bytes)
+        final String signature = Utils.hash(script)
         Expression expression = get(signature)
         if (expression == null){
             expression = parser.parseExpression(script)
@@ -33,5 +32,4 @@ class BSpel extends HashMap<String,Expression> {
         }
         return expression
     }
-
 }

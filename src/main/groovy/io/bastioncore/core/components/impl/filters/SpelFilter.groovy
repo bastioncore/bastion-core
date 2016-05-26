@@ -1,7 +1,7 @@
 package io.bastioncore.core.components.impl.filters
 
 import io.bastioncore.core.Configuration
-import io.bastioncore.core.spel.BSpel
+import io.bastioncore.core.scripting.BSpel
 import io.bastioncore.core.components.AbstractFilter
 import io.bastioncore.core.messages.DefaultMessage
 import org.springframework.context.annotation.Scope
