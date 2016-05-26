@@ -6,7 +6,7 @@ class ResponseMessage implements Cloneable,Serializable {
     final Context context
     final def content
 
-    public ResponseMessage(Context context, def content){
+    public ResponseMessage(def content, Context context){
         this.context = context
         this.content = content
     }
