@@ -64,7 +64,7 @@ abstract class AbstractProcess extends UntypedActor{
         }
         if(message instanceof DefaultMessage) {
             log.debug(getPath()+' received a message. Forwarding to entry')
-            entry.tell(message, self())
+            entry.tell(message, sender())
         }
         if (message == Messages.STOP_PROCESS) {
             log.info(getPath()+' is being stopped')
