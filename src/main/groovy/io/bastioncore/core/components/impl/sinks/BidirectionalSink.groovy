@@ -1,5 +1,6 @@
 package io.bastioncore.core.components.impl.sinks
 
+import akka.pattern.PromiseActorRef
 import io.bastioncore.core.components.AbstractSink
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.ResponseMessage
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component
 class BidirectionalSink extends AbstractSink {
     @Override
     DefaultMessage process(DefaultMessage message) {
-        sender().tell(new ResponseMessage(message.context,message.content),self())
+        PromiseActorRef ref = sender()
+        ref.tell(new ResponseMessage(message.content, message.context),self())
+        return null
     }
 }
