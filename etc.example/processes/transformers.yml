@@ -1,9 +1,9 @@
 id: transformers
-type: basic
+type: bidirectional
 components:
   - id: in
     type: entry
-    bean: consoleEntry
+    bean: basicEntry
     next: transformer1
 
   - id: transformer1
@@ -27,4 +27,4 @@ components:
 
   - id: out
     type: sink
-    bean: consoleSink
+    bean: bidirectionalSink
