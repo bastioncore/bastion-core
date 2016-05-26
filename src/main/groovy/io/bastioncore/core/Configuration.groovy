@@ -11,8 +11,4 @@ class Configuration {
     Configuration(def map){
         this.map = map
     }
-
-    def get(String key){
-        return map.get(key)
-    }
 }
