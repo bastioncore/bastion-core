@@ -57,7 +57,6 @@ class ExampleTests {
     void composerTest(){
         def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/composer.yml'))))
         ActorRef ref = BasicProcess.setup(ContextHolder.actorSystem,configuration)
-
         ref.tell(new DefaultMessage('a'),null)
         ref.tell(new DefaultMessage('b'),null)
         FiniteDuration duration = Duration.create('3 seconds')
@@ -74,6 +73,16 @@ class ExampleTests {
         Future future = Patterns.ask(ref, new DefaultMessage('a'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
         assert res.content.containsAll(['a 1','a 2'])
+    }
+
+    @Test
+    void switchTest(){
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/switch.yml'))))
+        ActorRef ref = BasicProcess.setup(ContextHolder.actorSystem,configuration)
+        FiniteDuration duration = Duration.create('3 seconds')
+        Future future = Patterns.ask(ref, new DefaultMessage('7'),Timeout.durationToTimeout(duration))
+        ResponseMessage res = Await.result(future,duration)
+        assert res.content==7
     }
 
 }

@@ -1,0 +1,40 @@
+id: hub
+type: bidirectional
+components:
+  - id: in
+    type: entry
+    bean: basicEntry
+    next: switch
+    converters:
+      out: toIntConverter
+
+  - id: switch
+    type: hub
+    bean: spelSwitch
+    configuration:
+      components:
+        - next: transformer1
+          spel: "content <=10"
+        - next: transformer2
+          spel: "content > 10"
+    next: end
+
+
+  - id: transformer1
+    type: transformer
+    bean: spelTransformer
+    configuration:
+      spel: "content*1"
+    next: out
+
+  - id: transformer2
+    type: transformer
+    bean: spelTransformer
+    configuration:
+      spel: "content*2"
+    next: out
+
+
+  - id: out
+    type: sink
+    bean: bidirectionalSink
