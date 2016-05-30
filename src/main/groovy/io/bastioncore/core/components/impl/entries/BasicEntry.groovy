@@ -1,6 +1,5 @@
 package io.bastioncore.core.components.impl.entries
 
-import akka.actor.ActorRef
 import io.bastioncore.core.components.AbstractEntry
 import io.bastioncore.core.messages.DefaultMessage
 import org.springframework.context.annotation.Scope
@@ -12,11 +11,5 @@ class BasicEntry extends AbstractEntry{
     @Override
     DefaultMessage process(DefaultMessage message) {
         return message
-    }
-
-    public ActorRef getProperSender(){
-        if(configuration.bidirectional)
-            return sender()
-        return super.getProperSender()
     }
 }

@@ -1,0 +1,43 @@
+id: hub
+type: bidirectional
+components:
+  - id: in
+    type: entry
+    bean: basicEntry
+    next: hub
+
+  - id: hub
+    type: hub
+    bean: basicHub
+    configuration:
+      components:
+        - transformer1
+        - transformer2
+    next: end
+
+
+  - id: transformer1
+    type: transformer
+    bean: spelTransformer
+    configuration:
+      spel: "content+' 1'"
+    next: composer
+
+  - id: transformer2
+    type: transformer
+    bean: spelTransformer
+    configuration:
+      spel: "content+' 2'"
+    next: composer
+
+  - id: composer
+    type: composer
+    bean: bufferComposer
+    configuration:
+      size: 2
+    next: out
+
+
+  - id: out
+    type: sink
+    bean: bidirectionalSink

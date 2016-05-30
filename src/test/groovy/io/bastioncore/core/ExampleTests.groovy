@@ -31,7 +31,6 @@ class ExampleTests {
 
     @After
     void shutDown(){
-        Thread.sleep(1000)
         ContextHolder.actorSystem.terminate()
     }
     @Test
@@ -53,4 +52,28 @@ class ExampleTests {
         ResponseMessage res = Await.result(future,duration)
         assert res.content=='t r a n s f o r m e r   s p e l '
     }
+
+    @Test
+    void composerTest(){
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/composer.yml'))))
+        ActorRef ref = BasicProcess.setup(ContextHolder.actorSystem,configuration)
+
+        ref.tell(new DefaultMessage('a'),null)
+        ref.tell(new DefaultMessage('b'),null)
+        FiniteDuration duration = Duration.create('3 seconds')
+        Future future = Patterns.ask(ref,new DefaultMessage('c'),Timeout.durationToTimeout(duration))
+        ResponseMessage res = Await.result(future,duration)
+        assert res.content.containsAll(['a','b','c'])
+    }
+
+    @Test
+    void hubTest(){
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/hub.yml'))))
+        ActorRef ref = BasicProcess.setup(ContextHolder.actorSystem,configuration)
+        FiniteDuration duration = Duration.create('3 seconds')
+        Future future = Patterns.ask(ref, new DefaultMessage('a'),Timeout.durationToTimeout(duration))
+        ResponseMessage res = Await.result(future,duration)
+        assert res.content.containsAll(['a 1','a 2'])
+    }
+
 }

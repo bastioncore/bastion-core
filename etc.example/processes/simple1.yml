@@ -1,5 +1,5 @@
 id: simple1
-type: bidirectional
+type: simple
 components:
   - id: in
     type: entry

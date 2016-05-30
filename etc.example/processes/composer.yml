@@ -1,9 +1,9 @@
 id: composer
-type: basic
+type: bidirectional
 components:
   - id: in
     type: entry
-    bean: consoleEntry
+    bean: basicEntry
     next: composer
 
   - id: composer
@@ -15,4 +15,4 @@ components:
 
   - id: out
     type: sink
-    bean: consoleSink
+    bean: bidirectionalSink

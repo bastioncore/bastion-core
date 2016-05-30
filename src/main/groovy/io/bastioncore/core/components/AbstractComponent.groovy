@@ -74,23 +74,21 @@ abstract class AbstractComponent extends UntypedActor {
     }
 
     boolean sendToNext(DefaultMessage message){
-        final String next = getNextPath()
-        return send(next,message)
+        return send(null,message)
     }
 
     boolean send(String path, DefaultMessage message){
         ActorRef sender = getProperSender()
-        return send(path,message,sender)
+        ActorSelection dest = nextActor
+        if(path != null)
+            dest = context().actorSelection(path)
+        if(dest != null)
+            dest.tell(convert('out',message), sender)
     }
 
     ActorRef getProperSender(){
-        ActorRef sender = self()
-        if(configuration.bidirectional && !isEntry())
-            sender = getSender()
-        return sender
+        return sender()
     }
-
-
 
     boolean isEntry(){
         return configuration.type=='entry'
@@ -98,14 +96,6 @@ abstract class AbstractComponent extends UntypedActor {
 
     String getPath(){
         return self().path().toString()
-    }
-
-    boolean send(String path, DefaultMessage message, ActorRef sender){
-        if( nextActor ) {
-            nextActor.tell(convert('out',message), sender)
-            return true
-        }
-        return false
     }
 
     DefaultMessage convert(String stage,DefaultMessage message){

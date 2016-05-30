@@ -36,9 +36,6 @@ abstract class AbstractEntry extends AbstractComponent {
             log.debug(getPath()+' pause toggle: '+paused)
         }
     }
-    ActorRef getProperSender(){
-       return self()
-    }
 
     void ask(String path, DefaultMessage message){
         log.debug(getPath()+' asking process')
