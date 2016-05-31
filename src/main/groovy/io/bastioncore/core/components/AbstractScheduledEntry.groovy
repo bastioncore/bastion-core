@@ -20,6 +20,8 @@ abstract class AbstractScheduledEntry extends AbstractEntry implements Schedulab
         super.onReceive(message)
         if(message instanceof Configuration)
             schedule()
+        if(message==Messages.TICK)
+            processTick()
     }
 
     void schedule(String delay,String interval){
@@ -32,6 +34,8 @@ abstract class AbstractScheduledEntry extends AbstractEntry implements Schedulab
                                             new DefaultMessage(Messages.TICK, new Context()),
                                             context().dispatcher(), self())
     }
+
+    abstract void processTick()
 
     public void postStop(){
         cancellable.cancel()

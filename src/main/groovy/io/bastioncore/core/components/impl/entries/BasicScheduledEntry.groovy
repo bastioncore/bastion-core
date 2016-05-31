@@ -17,4 +17,9 @@ class BasicScheduledEntry extends AbstractScheduledEntry {
     void schedule() {
         schedule(configuration.configuration.delay,configuration.configuration.interval)
     }
+
+    @Override
+    void processTick() {
+        process(new DefaultMessage('tick'))
+    }
 }
