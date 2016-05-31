@@ -16,8 +16,10 @@ components:
   - id: adder
     type: transformer
     bean: spelTransformer
+    converters:
+      in: toIntConverter
     configuration:
-      spel: "new Integer(content)+1"
+      spel: "content+1"
     next: out
 
   - id: out
