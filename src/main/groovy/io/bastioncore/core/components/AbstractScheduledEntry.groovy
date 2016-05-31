@@ -5,6 +5,7 @@ import akka.actor.Scheduler
 import io.bastioncore.core.messages.Context
 import io.bastioncore.core.Configuration
 import io.bastioncore.core.messages.DefaultMessage
+import io.bastioncore.core.messages.Messages
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.FiniteDuration
 
@@ -14,8 +15,6 @@ import scala.concurrent.duration.FiniteDuration
 abstract class AbstractScheduledEntry extends AbstractEntry implements Schedulable {
 
     Cancellable cancellable
-
-    public static final String CONTENT_TICK = 'TICK'
 
     void onReceive(def message){
         super.onReceive(message)
@@ -30,7 +29,7 @@ abstract class AbstractScheduledEntry extends AbstractEntry implements Schedulab
         cancellable = scheduler.schedule(delayObject,
                                             intervalObject,
                                             self(),
-                                            new DefaultMessage(CONTENT_TICK, new Context()),
+                                            new DefaultMessage(Messages.TICK, new Context()),
                                             context().dispatcher(), self())
     }
 
