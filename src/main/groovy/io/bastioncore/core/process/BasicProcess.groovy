@@ -5,7 +5,7 @@ import akka.actor.ActorSystem
 import akka.actor.Props
 
 /**
- *
+ * The basic process definition
  */
 class BasicProcess extends AbstractProcess {
 
