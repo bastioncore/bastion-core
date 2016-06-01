@@ -9,14 +9,15 @@ import org.slf4j.LoggerFactory
  */
 class BGroovy {
 
-    private GroovyShell groovyShell = new GroovyShell()
+    private GroovyShell groovyShell
 
     private static BGroovy instance
 
     static final Logger log = LoggerFactory.getLogger(BGroovy.class)
 
     private BGroovy(){
-
+        super()
+        groovyShell = new GroovyShell()
     }
 
     public static BGroovy getInstance(){
@@ -36,5 +37,10 @@ class BGroovy {
             log.debug('class parsed')
         }
         return theClass.newInstance()
+    }
+
+    public Script parseTemplate(String template){
+        template = 'return \"'+template.replaceAll('\"','\\\\"')+'\"'
+        return parse(template)
     }
 }
