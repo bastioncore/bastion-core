@@ -33,12 +33,12 @@ abstract class AbstractEntry extends AbstractComponent {
             super.onReceive(message)
         if (Messages.PAUSE_ENTRY == message) {
             paused = !paused
-            log.debug(getPath()+' pause toggle: '+paused)
+            debug(' pause toggle: '+paused)
         }
     }
 
     void ask(String path, DefaultMessage message){
-        log.debug(getPath()+' asking process')
+        debug('asking process')
         final ActorSelection nextActor = context().actorSelection(path)
         final String timeout = configuration.configuration.timeout
         final FiniteDuration duration = Duration.create(timeout)

@@ -26,7 +26,7 @@ class SpelFilter extends AbstractFilter {
     DefaultMessage process(DefaultMessage message) {
         EvaluationContext context = new StandardEvaluationContext(message);
         Boolean pass = expression.getValue(context,Boolean.class)
-        log.debug('Filter '+self().path()+' pass: '+pass)
+        debug('Filter pass: '+pass)
         return pass ? message : null
     }
 }

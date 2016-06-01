@@ -10,6 +10,6 @@ abstract class AbstractSink extends AbstractComponent {
     void onReceive(def message){
         super.onReceive(message)
         if(message instanceof DefaultMessage)
-            log.debug('Process time: '+(System.currentTimeMillis()-message.context.start_time)+'ms')
+            debug('Process time: '+(System.currentTimeMillis()-message.context.start_time)+'ms')
     }
 }

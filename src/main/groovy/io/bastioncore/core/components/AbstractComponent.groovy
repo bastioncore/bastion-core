@@ -24,6 +24,12 @@ abstract class AbstractComponent extends UntypedActor {
 
     AbstractConverter inConverter, outConverter
 
+    void debug(String data){
+        log.debug(self().path().toString()+' '+data)
+    }
+    void info(String data){
+        log.info(self().path().toString()+' '+data)
+    }
 
     String getNextPath(){
         return getPath(processPath,configuration.next)
@@ -43,15 +49,15 @@ abstract class AbstractComponent extends UntypedActor {
             processPath = sender().path().toString()
             initNextActor()
             initConverters()
-            log.debug('Configuring component '+getPath())
+            debug('Configuring component')
         }
         if (message instanceof DefaultMessage) {
-            log.debug(getPath()+' accepting message')
+            debug('accepting message')
             message.context.hop()
             sendToNext(process(convert('in',message)))
         }
         if (message instanceof ResponseMessage){
-            log.debug(getPath()+' response received')
+            debug('response received')
             super.onReceive(message)
         }
     }
