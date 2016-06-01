@@ -2,13 +2,10 @@ package io.bastioncore.core.components
 
 import akka.actor.Cancellable
 import akka.actor.Scheduler
-import io.bastioncore.core.messages.Context
 import io.bastioncore.core.Configuration
-import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.Messages
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.FiniteDuration
-
 /**
  *
  */
@@ -20,8 +17,9 @@ abstract class AbstractScheduledEntry extends AbstractEntry implements Schedulab
         super.onReceive(message)
         if(message instanceof Configuration)
             schedule()
-        if(message==Messages.TICK)
+        if(message==Messages.TICK) {
             processTick()
+        }
     }
 
     void schedule(String delay,String interval){
@@ -31,7 +29,7 @@ abstract class AbstractScheduledEntry extends AbstractEntry implements Schedulab
         cancellable = scheduler.schedule(delayObject,
                                             intervalObject,
                                             self(),
-                                            new DefaultMessage(Messages.TICK, new Context()),
+                                            Messages.TICK,
                                             context().dispatcher(), self())
     }
 
