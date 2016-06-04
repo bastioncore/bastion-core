@@ -3,7 +3,7 @@ package io.bastioncore.core
 /**
  *
  */
-class Configuration {
+class Configuration implements Cloneable {
 
     @Delegate
     Map map
