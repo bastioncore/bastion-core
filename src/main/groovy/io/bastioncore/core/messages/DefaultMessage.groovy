@@ -1,5 +1,7 @@
 package io.bastioncore.core.messages
 
+import org.apache.commons.lang3.ObjectUtils
+
 /**
  *
  */
@@ -17,9 +19,6 @@ class DefaultMessage implements Cloneable,Serializable {
     }
 
     public DefaultMessage clone(){
-        def c = content
-        if( content instanceof Cloneable )
-            c = c.clone()
-        return new DefaultMessage(c,context.clone())
+        return new DefaultMessage(ObjectUtils.cloneIfPossible(content),context.clone())
     }
 }
