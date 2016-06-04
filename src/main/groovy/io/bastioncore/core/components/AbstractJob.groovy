@@ -6,7 +6,7 @@ import org.apache.commons.lang3.ObjectUtils
 abstract class AbstractJob extends AbstractComponent {
 
     DefaultMessage process(DefaultMessage message){
-        run(ObjectUtils.clone(message))
+        run(message.clone())
         return message
     }
 

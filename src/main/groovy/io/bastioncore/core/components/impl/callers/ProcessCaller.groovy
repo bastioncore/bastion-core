@@ -2,6 +2,7 @@ package io.bastioncore.core.components.impl.callers
 
 import io.bastioncore.core.components.AbstractCaller
 import io.bastioncore.core.messages.DefaultMessage
+import org.apache.commons.lang3.ObjectUtils
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 

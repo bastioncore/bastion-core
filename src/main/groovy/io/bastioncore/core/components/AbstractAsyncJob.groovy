@@ -15,15 +15,19 @@ abstract class AbstractAsyncJob extends AbstractJob {
 
     ActorRef pool
 
-    void onReceive(def message){
+    void onReceive(def message) {
         super.onReceive(message)
-        if( message instanceof Configuration && !configuration.child ){
-            pool = context().actorOf(new RoundRobinPool(configuration.configuration.jobs).props(Props.create(this.getClass())),'pool')
-            Configuration childConf = ObjectUtils.clone(configuration)
-            childConf.child = true
-            childConf.next = END_ID
-            pool.tell(new Broadcast(childConf),self())
-        }
+        if (message instanceof Configuration)
+            if (configuration.child)
+                debug('Configuring child job')
+            else {
+                debug('Configuring root job')
+                pool = context().actorOf(new RoundRobinPool(configuration.configuration.jobs).props(Props.create(this.getClass())), 'pool')
+                Configuration childConf = configuration.clone()
+                childConf.child = true
+                childConf.next = END_ID
+                pool.tell(new Broadcast(childConf), self())
+            }
     }
 
     DefaultMessage process(DefaultMessage defaultMessage){
