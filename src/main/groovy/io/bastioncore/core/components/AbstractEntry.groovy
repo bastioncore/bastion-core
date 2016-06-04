@@ -38,7 +38,7 @@ abstract class AbstractEntry extends AbstractComponent {
     }
 
     void ask(String path, DefaultMessage message){
-        debug('asking process')
+        debug('asking to '+path)
         final ActorSelection nextActor = context().actorSelection(path)
         final String timeout = configuration.configuration.timeout
         final FiniteDuration duration = Duration.create(timeout)

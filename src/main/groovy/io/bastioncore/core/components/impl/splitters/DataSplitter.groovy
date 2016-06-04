@@ -12,6 +12,7 @@ class DataSplitter extends AbstractSplitter {
     @Override
     DefaultMessage process(DefaultMessage message) {
         def data = message.content
+        debug('splitting '+data.size()+' items')
         data.each {
             sendToNext(new DefaultMessage(it, message.context))
         }

@@ -23,6 +23,7 @@ abstract class AbstractScheduledEntry extends AbstractEntry implements Schedulab
     }
 
     void schedule(String delay,String interval){
+        debug('setting up scheduler for delay: '+delay+' interval: '+interval)
         final Scheduler scheduler = context().system().scheduler()
         FiniteDuration delayObject = Duration.create(delay)
         FiniteDuration intervalObject = Duration.create(interval)

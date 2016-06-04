@@ -24,8 +24,10 @@ class BufferComposer extends AbstractComposer {
     }
     @Override
     DefaultMessage process(DefaultMessage message) {
+       debug('buffering item')
        state.add(message.content)
        if(state.size()==size){
+           debug('buffer max size reached, ready to send')
            def val = state
            initState()
            return new DefaultMessage(val)

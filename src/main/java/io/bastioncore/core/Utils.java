@@ -1,10 +1,10 @@
 package io.bastioncore.core;
 
+import groovy.transform.CompileStatic;
+
 import java.security.MessageDigest;
 
-/**
- *
- */
+@CompileStatic
 public class Utils {
 
     static MessageDigest digest;

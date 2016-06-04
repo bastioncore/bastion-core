@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component
 class BidirectionalSink extends AbstractSink {
     @Override
     DefaultMessage process(DefaultMessage message) {
+        debug('message in sink ready to be sent back')
         PromiseActorRef ref = sender()
         ref.tell(new ResponseMessage(message.content, message.context),self())
         return null

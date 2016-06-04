@@ -49,7 +49,7 @@ abstract class AbstractComponent extends UntypedActor {
             processPath = sender().path().toString()
             initNextActor()
             initConverters()
-            debug('Configuring component')
+            debug('configuring component')
         }
         if (message instanceof DefaultMessage) {
             debug('accepting message')
@@ -88,8 +88,10 @@ abstract class AbstractComponent extends UntypedActor {
         ActorSelection dest = nextActor
         if(path != null)
             dest = context().actorSelection(path)
-        if(dest != null)
-            dest.tell(convert('out',message), sender)
+        if(dest != null) {
+            debug('sending message to '+dest.path().toString())
+            dest.tell(convert('out', message), sender)
+        }
     }
 
     ActorRef getProperSender(){
@@ -108,14 +110,16 @@ abstract class AbstractComponent extends UntypedActor {
         def content = message.content
         switch (stage){
             case 'in':
-                if (inConverter)
+                if (inConverter) {
+                    debug('running in-converter')
                     content = inConverter.convert(content)
-                else
-                    return message
+                }
                 break
             case 'out':
-                if (outConverter)
+                if (outConverter) {
                     content = outConverter.convert(content)
+                    debug('running out-converter')
+                }
                 break
         }
         return new DefaultMessage(content,message.context)

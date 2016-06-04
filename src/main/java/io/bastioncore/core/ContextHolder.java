@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 /**
  *
  */
-class ContextHolder {
+public class ContextHolder {
 
     public static ApplicationContext applicationContext;
 

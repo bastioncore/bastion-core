@@ -1,14 +1,27 @@
 package io.bastioncore.core.components.impl.transformers
 
 import groovy.json.JsonOutput
+import groovy.transform.CompileStatic
+import io.bastioncore.core.Configuration
+import io.bastioncore.core.ContextHolder
 import io.bastioncore.core.components.AbstractTransformer
+import io.bastioncore.core.converters.AbstractConverter
+import io.bastioncore.core.converters.JsonToDataConverter
 import io.bastioncore.core.messages.DefaultMessage
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 
 @Component
 @Scope('prototype')
+@CompileStatic
 class DataToJson extends AbstractTransformer {
+
+    JsonToDataConverter converter
+
+    void onReceive(def message){
+        if(message instanceof Configuration)
+            converter = (JsonToDataConverter)ContextHolder.applicationContext.getBean('jsonToDataConverter')
+    }
 
     @Override
     DefaultMessage process(DefaultMessage message) {
