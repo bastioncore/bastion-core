@@ -2,7 +2,7 @@ package io.bastioncore.core.messages
 /**
  *
  */
-class ResponseMessage implements Cloneable,Serializable {
+class ResponseMessage implements Serializable {
     final Context context
     final def content
 
