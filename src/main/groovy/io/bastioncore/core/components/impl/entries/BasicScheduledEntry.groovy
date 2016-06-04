@@ -20,6 +20,6 @@ class BasicScheduledEntry extends AbstractScheduledEntry {
 
     @Override
     void processTick() {
-        process(new DefaultMessage('tick'))
+        self().tell(new DefaultMessage('tick'),self())
     }
 }
