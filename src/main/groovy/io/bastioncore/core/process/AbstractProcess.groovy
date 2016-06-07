@@ -63,17 +63,21 @@ abstract class AbstractProcess extends UntypedActor{
     public void onReceive(def message){
         if(message instanceof Configuration) {
             this.configuration = message
-            log.info('Configuring process : '+self().path())
+            log.info('configuring process : '+self().path())
             /**
              * First we need to create the child components. They cannot be all configured yet
              * because the configuration process might need a reference to another component
              */
-            message.components.each {
-                ActorRef ref = createChild(new Configuration(it))
-                components.add(ref)
-                if(it.type == 'entry')
-                    entry = ref
-            }
+            if(components.size()==0) {
+                log.debug(message.components.size()+' components being built from scratch')
+                message.components.each {
+                    ActorRef ref = createChild(new Configuration(it))
+                    components.add(ref)
+                    if (it.type == 'entry')
+                        entry = ref
+                }
+            } else
+                log.debug('reconfiguring existing components')
             /**
              * We can configure them now
              */
