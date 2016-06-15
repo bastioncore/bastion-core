@@ -3,7 +3,7 @@ import akka.actor.ActorRef
 import akka.actor.ActorSelection
 import akka.actor.UntypedActor
 import io.bastioncore.core.Configuration
-import io.bastioncore.core.ContextHolder
+import io.bastioncore.core.BastionContext
 import io.bastioncore.core.converters.AbstractConverter
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.ResponseMessage
@@ -74,9 +74,9 @@ abstract class AbstractComponent extends UntypedActor {
         String inId = configuration.converters?.in
         String outId = configuration.converters?.out
         if(inId)
-            inConverter = ContextHolder.applicationContext.getBean(inId)
+            inConverter = BastionContext.instance.applicationContext.getBean(inId)
         if(outId)
-            outConverter = ContextHolder.applicationContext.getBean(outId)
+            outConverter = BastionContext.instance.applicationContext.getBean(outId)
     }
 
     boolean sendToNext(DefaultMessage message){

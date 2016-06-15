@@ -21,18 +21,18 @@ class ReconfigurationTests {
 
     @Before
     void setUp(){
-        ContextHolder.initialize('bastioncore')
-        ContextHolder.etcPath='etc.example/'
+        BastionContext.initializeAll('bastioncore')
+        BastionContext.instance.etcPath='etc.example/'
     }
 
     @After
     void shutDown(){
-        ContextHolder.terminate()
+        BastionContext.instance.terminate()
     }
 
     @Test
     void reconfigureTest(){
-        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/simple1.yml'))))
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/simple1.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
         FiniteDuration duration = Duration.create('3 seconds')
         Future future = Patterns.ask(ref,new DefaultMessage('["1"]'),Timeout.durationToTimeout(duration))

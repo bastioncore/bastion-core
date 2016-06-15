@@ -3,9 +3,8 @@ package io.bastioncore.core.components.impl.transformers
 import groovy.json.JsonOutput
 import groovy.transform.CompileStatic
 import io.bastioncore.core.Configuration
-import io.bastioncore.core.ContextHolder
+import io.bastioncore.core.BastionContext
 import io.bastioncore.core.components.AbstractTransformer
-import io.bastioncore.core.converters.AbstractConverter
 import io.bastioncore.core.converters.JsonToDataConverter
 import io.bastioncore.core.messages.DefaultMessage
 import org.springframework.context.annotation.Scope
@@ -20,7 +19,7 @@ class DataToJson extends AbstractTransformer {
 
     void onReceive(def message){
         if(message instanceof Configuration)
-            converter = (JsonToDataConverter)ContextHolder.applicationContext.getBean('jsonToDataConverter')
+            converter = (JsonToDataConverter)BastionContext.instance.applicationContext.getBean('jsonToDataConverter')
     }
 
     @Override

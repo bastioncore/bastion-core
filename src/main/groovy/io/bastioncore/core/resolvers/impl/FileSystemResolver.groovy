@@ -1,6 +1,6 @@
 package io.bastioncore.core.resolvers.impl
 
-import io.bastioncore.core.ContextHolder
+import io.bastioncore.core.BastionContext
 import io.bastioncore.core.resolvers.IResourceResolver
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
@@ -11,7 +11,7 @@ class FileSystemResolver implements IResourceResolver {
 
     @Override
     def getResource(LinkedHashMap params) {
-        String path = ContextHolder.etcPath
+        String path = BastionContext.instance.etcPath
         switch(params.type){
             case 'scripts':
                 path+='scripts/'

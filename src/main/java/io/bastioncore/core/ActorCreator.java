@@ -11,6 +11,6 @@ public class ActorCreator<T> implements Creator<T> {
     }
 
     public T create() throws Exception {
-        return (T) ContextHolder.applicationContext.getBean(id);
+        return (T) BastionContext.getInstance().applicationContext.getBean(id);
     }
 }

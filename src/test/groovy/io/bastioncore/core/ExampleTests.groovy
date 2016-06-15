@@ -22,17 +22,17 @@ class ExampleTests {
 
     @Before
     void setUp(){
-        ContextHolder.initialize('bastion')
-        ContextHolder.etcPath='etc.example/'
+        BastionContext.initializeAll('bastion')
+        BastionContext.instance.etcPath='etc.example/'
     }
 
     @After
     void shutDown(){
-        ContextHolder.terminate()
+        BastionContext.instance.terminate()
     }
     @Test
     void simple1Test(){
-        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/simple1.yml'))))
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/simple1.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
         FiniteDuration duration = Duration.create('3 seconds')
         Future future = Patterns.ask(ref,new DefaultMessage('["1"]'),Timeout.durationToTimeout(duration))
@@ -42,7 +42,7 @@ class ExampleTests {
 
     @Test
     void transformersTest(){
-        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/transformers.yml'))))
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/transformers.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
         FiniteDuration duration = Duration.create('3 seconds')
         Future future = Patterns.ask(ref,new DefaultMessage('transformer'),Timeout.durationToTimeout(duration))
@@ -52,7 +52,7 @@ class ExampleTests {
 
     @Test
     void composerTest(){
-        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/composer.yml'))))
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/composer.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
         ref.tell(new DefaultMessage('a'),null)
         ref.tell(new DefaultMessage('b'),null)
@@ -64,7 +64,7 @@ class ExampleTests {
 
     @Test
     void hubTest(){
-        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/hub.yml'))))
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/hub.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
         FiniteDuration duration = Duration.create('3 seconds')
         Future future = Patterns.ask(ref, new DefaultMessage('a'),Timeout.durationToTimeout(duration))
@@ -74,7 +74,7 @@ class ExampleTests {
 
     @Test
     void switchTest(){
-        def configuration = new Configuration(new Yaml().load(new FileReader(new File(ContextHolder.etcPath+'processes/switch.yml'))))
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/switch.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
         FiniteDuration duration = Duration.create('3 seconds')
         Future future = Patterns.ask(ref, new DefaultMessage('7'),Timeout.durationToTimeout(duration))
