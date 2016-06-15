@@ -1,0 +1,21 @@
+id: sub
+type: simple
+components:
+  - id: in
+    type: entry
+    bean: basicSubEntry
+    configuration:
+      subscriber_pool: foobar
+    next: transformer
+
+  - id: transformer
+    type: transformer
+    bean: spelTransformer
+    configuration:
+      spel: content+" banana"
+    next: sink
+
+  - id: sink
+    type: sink
+    bean: bidirectionalSink
+    next: end

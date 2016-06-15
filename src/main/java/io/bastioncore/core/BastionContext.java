@@ -1,6 +1,7 @@
 package io.bastioncore.core;
 
 import akka.actor.ActorSystem;
+import io.bastioncore.core.pools.SubscriberPoolsCollector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -17,7 +18,11 @@ public class BastionContext {
 
     private static BastionContext instance;
 
+    SubscriberPoolsCollector subscriberPoolsCollector;
+
     private BastionContext(){
+        super();
+        subscriberPoolsCollector = new SubscriberPoolsCollector();
     }
 
     public void terminate(){
@@ -63,6 +68,10 @@ public class BastionContext {
 
     public void setEtcPath(String etcPath){
         this.etcPath = etcPath;
+    }
+
+    public SubscriberPoolsCollector getSubscriberPoolsCollector(){
+        return subscriberPoolsCollector;
     }
 
 

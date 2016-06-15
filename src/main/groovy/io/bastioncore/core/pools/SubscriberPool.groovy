@@ -1,10 +1,11 @@
 package io.bastioncore.core.pools
 
 import akka.actor.ActorRef
+import akka.actor.Props
 import akka.actor.UntypedActor
-import io.bastioncore.core.Configuration
+import io.bastioncore.core.BastionContext
+import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.Messages
-
 /**
  *
  */
@@ -14,17 +15,28 @@ class SubscriberPool extends UntypedActor {
 
     LinkedHashSet<ActorRef> subscribers
 
+    public SubscriberPool(String id){
+        this.id = id;
+        subscribers = new LinkedHashSet<ActorRef>()
+    }
+
     @Override
     void onReceive(Object message) throws Exception {
-        if (message instanceof Configuration){
-            id = message.id
-            subscribers = new LinkedHashSet<ActorRef>()
-        }
         if(message == Messages.SUBSCRIBE){
             subscribers.add(sender())
         }
         if(message == Messages.UNSUBSCRIBE){
             subscribers.remove(sender())
         }
+        if(message instanceof DefaultMessage){
+            subscribers.each {
+                it.tell(message,sender())
+            }
+        }
+
+    }
+
+    public static ActorRef setup(String id){
+       return BastionContext.getInstance().actorSystem.actorOf(Props.create(SubscriberPool.class,id),id);
     }
 }

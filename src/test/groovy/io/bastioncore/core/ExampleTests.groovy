@@ -14,6 +14,9 @@ import scala.concurrent.Await
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.FiniteDuration
+
+import javax.xml.ws.Response
+
 /**
  *
  */
@@ -80,6 +83,15 @@ class ExampleTests {
         Future future = Patterns.ask(ref, new DefaultMessage('7'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
         assert res.content==7
+    }
+
+    @Test
+    void subTest(){
+        def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/sub.yml'))))
+        BasicProcess.setup(configuration)
+        Thread.sleep(200)
+        ResponseMessage resp =  BastionContext.instance.subscriberPoolsCollector.askSubscribers('foobar',new DefaultMessage('test'),'5 seconds')
+        assert resp.content=='test banana'
     }
 
 }
