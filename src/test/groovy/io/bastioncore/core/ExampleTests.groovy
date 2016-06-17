@@ -5,7 +5,7 @@ import akka.pattern.Patterns
 import akka.util.Timeout
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.ResponseMessage
-import io.bastioncore.core.process.BasicProcess
+import io.bastioncore.core.process.impl.BasicProcess
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

@@ -1,9 +1,13 @@
 package io.bastioncore.core;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import io.bastioncore.core.pools.SubscriberPoolsCollector;
+import io.bastioncore.core.process.ProcessPool;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -18,11 +22,14 @@ public class BastionContext {
 
     private static BastionContext instance;
 
-    SubscriberPoolsCollector subscriberPoolsCollector;
+    final SubscriberPoolsCollector subscriberPoolsCollector;
+
+    final ProcessPool processPool;
 
     private BastionContext(){
         super();
         subscriberPoolsCollector = new SubscriberPoolsCollector();
+        processPool = new ProcessPool();
     }
 
     public void terminate(){
@@ -72,6 +79,10 @@ public class BastionContext {
 
     public SubscriberPoolsCollector getSubscriberPoolsCollector(){
         return subscriberPoolsCollector;
+    }
+
+    public ProcessPool getProcessPool(){
+        return processPool;
     }
 
 
