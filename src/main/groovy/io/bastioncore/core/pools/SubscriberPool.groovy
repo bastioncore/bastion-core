@@ -3,12 +3,12 @@ package io.bastioncore.core.pools
 import akka.actor.ActorRef
 import akka.actor.Props
 import akka.actor.UntypedActor
+import groovy.transform.CompileStatic
 import io.bastioncore.core.BastionContext
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.Messages
-/**
- *
- */
+
+@CompileStatic
 class SubscriberPool extends UntypedActor {
 
     String id

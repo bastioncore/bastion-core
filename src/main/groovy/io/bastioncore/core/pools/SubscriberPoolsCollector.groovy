@@ -3,6 +3,7 @@ package io.bastioncore.core.pools
 import akka.actor.ActorRef
 import akka.pattern.Patterns
 import akka.util.Timeout
+import groovy.transform.CompileStatic
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.Messages
 import io.bastioncore.core.messages.ResponseMessage
@@ -13,6 +14,7 @@ import scala.concurrent.duration.FiniteDuration
 /**
  *
  */
+@CompileStatic
 class SubscriberPoolsCollector extends HashMap<String,ActorRef> {
 
     public SubscriberPoolsCollector(){
