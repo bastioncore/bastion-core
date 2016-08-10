@@ -1,7 +1,5 @@
 package io.bastioncore.core.messages
-
-import org.apache.commons.lang3.ObjectUtils
-
+import com.rits.cloning.Cloner
 /**
  *
  */
@@ -19,6 +17,7 @@ class DefaultMessage implements Cloneable,Serializable {
     }
 
     public DefaultMessage clone(){
-        return new DefaultMessage(ObjectUtils.cloneIfPossible(content),context.clone())
+        Cloner cloner = new Cloner()
+        return new DefaultMessage(cloner.deepClone(content),cloner.deepClone(context))
     }
 }

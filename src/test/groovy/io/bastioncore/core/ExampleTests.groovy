@@ -1,5 +1,4 @@
 package io.bastioncore.core
-
 import akka.actor.ActorRef
 import akka.pattern.Patterns
 import akka.util.Timeout
@@ -15,9 +14,6 @@ import scala.concurrent.Await
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.FiniteDuration
-
-import javax.xml.ws.Response
-
 /**
  *
  */

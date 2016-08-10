@@ -10,6 +10,7 @@ import io.bastioncore.core.components.AbstractComponent
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.LogMessage
 import io.bastioncore.core.messages.Messages
+import io.bastioncore.core.messages.ResponseMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import scala.concurrent.duration.Duration
@@ -120,7 +121,10 @@ abstract class AbstractProcess extends UntypedActor{
             entry.tell(message, sender())
         }
         if (message == Messages.QUERY_LOGS){
-            logger.tell(message,sender())
+            if(logger)
+                logger.tell(message,sender())
+            else
+                sender().tell(new ResponseMessage(null),self())
         }
     }
 
