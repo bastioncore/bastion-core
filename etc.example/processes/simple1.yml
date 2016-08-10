@@ -1,5 +1,7 @@
 id: simple1
 type: simple
+logger:
+  bean: memorySimpleLogger
 components:
   - id: in
     type: entry

@@ -8,6 +8,7 @@ import io.bastioncore.core.ActorCreator
 import io.bastioncore.core.Configuration
 import io.bastioncore.core.components.AbstractComponent
 import io.bastioncore.core.messages.DefaultMessage
+import io.bastioncore.core.messages.LogMessage
 import io.bastioncore.core.messages.Messages
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -31,6 +32,8 @@ abstract class AbstractProcess extends UntypedActor{
      * The default supervisor strategy
      */
     final SupervisorStrategy supervisorStrategy
+
+    ActorRef logger
 
     /**
      * Logger
@@ -64,6 +67,10 @@ abstract class AbstractProcess extends UntypedActor{
         if(message instanceof Configuration) {
             this.configuration = message
             log.info('configuring process : '+self().path())
+
+            if(configuration.logger)
+                logger = context().actorOf(Props.create(new ActorCreator<AbstractComponent>(configuration.logger.bean)), 'logger')
+
             /**
              * First we need to create the child components. They cannot be all configured yet
              * because the configuration process might need a reference to another component
@@ -99,6 +106,11 @@ abstract class AbstractProcess extends UntypedActor{
             log.debug(getPath()+' received a message. Forwarding to entry')
             entry.tell(message, sender())
         }
+        if(message instanceof LogMessage) {
+            log.debug('Log message being dispatched')
+            if(logger)
+                logger.tell(message,sender())
+        }
         if (message == Messages.STOP_PROCESS) {
             log.info(getPath()+' is being stopped')
             context().stop(self())
@@ -106,6 +118,9 @@ abstract class AbstractProcess extends UntypedActor{
         if (message == Messages.PAUSE_ENTRY) {
             log.debug(getPath()+' the entry point is to be stopped')
             entry.tell(message, sender())
+        }
+        if (message == Messages.QUERY_LOGS){
+            logger.tell(message,sender())
         }
     }
 

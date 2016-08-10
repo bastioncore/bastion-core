@@ -6,6 +6,7 @@ import io.bastioncore.core.Configuration
 import io.bastioncore.core.BastionContext
 import io.bastioncore.core.converters.AbstractConverter
 import io.bastioncore.core.messages.DefaultMessage
+import io.bastioncore.core.messages.LogMessage
 import io.bastioncore.core.messages.ResponseMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -43,6 +44,13 @@ abstract class AbstractComponent extends UntypedActor {
         return processPath+'/'+componentId
     }
 
+    void tellLogger(LogMessage message){
+        context().actorSelection(processPath).tell(message,self())
+    }
+    void tellLogger(){
+        tellLogger(new LogMessage())
+    }
+
     void onReceive(def message){
         if (message instanceof Configuration){
             this.configuration = message
@@ -50,10 +58,12 @@ abstract class AbstractComponent extends UntypedActor {
             initNextActor()
             initConverters()
             debug('configuring component')
+            tellLogger(new LogMessage(LogMessage.TYPE_CONFIGURED))
         }
         if (message instanceof DefaultMessage) {
             debug('accepting message')
             message.context.hop()
+            tellLogger()
             sendToNext(process(convert('in',message)))
         }
         if (message instanceof ResponseMessage){

@@ -4,6 +4,7 @@ import akka.actor.ActorRef
 import akka.pattern.Patterns
 import akka.util.Timeout
 import io.bastioncore.core.messages.DefaultMessage
+import io.bastioncore.core.messages.Messages
 import io.bastioncore.core.messages.ResponseMessage
 import io.bastioncore.core.process.impl.BasicProcess
 import org.junit.After
@@ -41,6 +42,11 @@ class ExampleTests {
         Future future = Patterns.ask(ref,new DefaultMessage('["1"]'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
         assert res.content==2
+
+        Thread.sleep(500)
+        future = Patterns.ask(ref, Messages.QUERY_LOGS,Timeout.durationToTimeout(duration))
+        res = Await.result(future,duration)
+        println res.content
     }
 
     @Test

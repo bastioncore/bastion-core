@@ -10,4 +10,9 @@ class ResponseMessage implements Serializable {
         this.context = context
         this.content = content
     }
+
+    public ResponseMessage(def content){
+        this.content = content
+        context = new Context()
+    }
 }
