@@ -68,7 +68,7 @@ abstract class AbstractProcess extends UntypedActor{
             this.configuration = message
             log.info('configuring process : '+self().path())
 
-            if(configuration.logger)
+            if(configuration.logger && logger == null)
                 logger = context().actorOf(Props.create(new ActorCreator<AbstractComponent>(configuration.logger.bean)), 'logger')
 
             /**
