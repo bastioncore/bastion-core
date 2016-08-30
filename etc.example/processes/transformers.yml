@@ -23,6 +23,13 @@ components:
                   c2 += it+' '
                 }
                 return c2
+    next: transformer3
+
+  - id: transformer3
+    type: transformer
+    bean: groovyTransformer
+    configuration:
+      script: test_script.groovy
     next: out
 
   - id: out

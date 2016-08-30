@@ -52,7 +52,7 @@ class ExampleTests {
         FiniteDuration duration = Duration.create('3 seconds')
         Future future = Patterns.ask(ref,new DefaultMessage('transformer'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
-        assert res.content=='t r a n s f o r m e r   s p e l '
+        assert res.content=='t r a n s f o r m e r   s p e l ||--||'
     }
 
     @Test
