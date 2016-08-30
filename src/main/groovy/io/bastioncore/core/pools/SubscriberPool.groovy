@@ -7,6 +7,8 @@ import groovy.transform.CompileStatic
 import io.bastioncore.core.BastionContext
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.Messages
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 @CompileStatic
 class SubscriberPool extends UntypedActor {
@@ -14,6 +16,8 @@ class SubscriberPool extends UntypedActor {
     String id
 
     LinkedHashSet<ActorRef> subscribers
+
+    static final Logger log = LoggerFactory.getLogger(SubscriberPool.class)
 
     public SubscriberPool(String id){
         this.id = id;
