@@ -40,7 +40,7 @@ class ReconfigurationTests {
         assert res.content==2
         configuration.components[2].configuration.spel='content+2'
         ref.tell(configuration,null)
-
+        Thread.sleep(200)
         future = Patterns.ask(ref,new DefaultMessage('["1"]'),Timeout.durationToTimeout(duration))
         res = Await.result(future,duration)
         assert res.content==3
