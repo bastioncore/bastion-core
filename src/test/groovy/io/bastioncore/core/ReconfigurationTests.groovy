@@ -34,13 +34,14 @@ class ReconfigurationTests {
     void reconfigureTest(){
         def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/simple1.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
+        Thread.sleep(1000)
         FiniteDuration duration = Duration.create('3 seconds')
         Future future = Patterns.ask(ref,new DefaultMessage('["1"]'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
         assert res.content==2
         configuration.components[2].configuration.spel='content+2'
         ref.tell(configuration,null)
-        Thread.sleep(200)
+        Thread.sleep(1000)
         future = Patterns.ask(ref,new DefaultMessage('["1"]'),Timeout.durationToTimeout(duration))
         res = Await.result(future,duration)
         assert res.content==3

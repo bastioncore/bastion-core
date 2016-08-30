@@ -34,6 +34,7 @@ class ExampleTests {
     void simple1Test(){
         def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/simple1.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
+        Thread.sleep(1000)
         FiniteDuration duration = Duration.create('5 seconds')
         Future future = Patterns.ask(ref,new DefaultMessage('["1"]'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
@@ -49,6 +50,7 @@ class ExampleTests {
     void transformersTest(){
         def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/transformers.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
+        Thread.sleep(1000)
         FiniteDuration duration = Duration.create('5 seconds')
         Future future = Patterns.ask(ref,new DefaultMessage('transformer'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
@@ -59,6 +61,7 @@ class ExampleTests {
     void composerTest(){
         def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/composer.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
+        Thread.sleep(1000)
         ref.tell(new DefaultMessage('a'),null)
         ref.tell(new DefaultMessage('b'),null)
         FiniteDuration duration = Duration.create('5 seconds')
@@ -71,6 +74,7 @@ class ExampleTests {
     void hubTest(){
         def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/hub.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
+        Thread.sleep(1000)
         FiniteDuration duration = Duration.create('5 seconds')
         Future future = Patterns.ask(ref, new DefaultMessage('a'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
@@ -81,6 +85,7 @@ class ExampleTests {
     void switchTest(){
         def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/switch.yml'))))
         ActorRef ref = BasicProcess.setup(configuration)
+        Thread.sleep(1000)
         FiniteDuration duration = Duration.create('5 seconds')
         Future future = Patterns.ask(ref, new DefaultMessage('7'),Timeout.durationToTimeout(duration))
         ResponseMessage res = Await.result(future,duration)
@@ -91,7 +96,7 @@ class ExampleTests {
     void subTest(){
         def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/sub.yml'))))
         BasicProcess.setup(configuration)
-        Thread.sleep(200)
+        Thread.sleep(1000)
         ResponseMessage resp =  BastionContext.instance.subscriberPoolsCollector.askSubscribers('foobar',new DefaultMessage('test'),'10 seconds')
         assert resp.content=='test banana'
     }
