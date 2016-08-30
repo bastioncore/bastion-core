@@ -1,9 +1,9 @@
 package io.bastioncore.core.pools
-
 import akka.actor.ActorRef
 import akka.pattern.Patterns
 import akka.util.Timeout
-import groovy.transform.CompileStatic
+import io.bastioncore.core.BastionContext
+import io.bastioncore.core.Configuration
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.Messages
 import io.bastioncore.core.messages.ResponseMessage
@@ -32,14 +32,20 @@ class SubscriberPoolsCollector extends HashMap<String,HashMap<String,Object>> {
         return get(id)
     }
 
-    public synchronized void checkPool(def configuration){
-        if(!containsKey(configuration.id)) {
-            ActorRef subscriberPool = SubscriberPool.setup(configuration.id)
-            registerSubscriberPool(configuration.id, subscriberPool,configuration)
+    public synchronized def checkPool(String id,Configuration configuration){
+        if(!containsKey(id)) {
+            ActorRef subscriberPool = SubscriberPool.setup(id)
+            registerSubscriberPool(id, subscriberPool,configuration)
+        }
+        return get(id)
+    }
+    public synchronized  def checkPools(Configuration configuration){
+        configuration.each {
+            checkPool(it.key,new Configuration(it.value))
         }
     }
 
-    public void registerSubscriberPool(String id, ActorRef pool,def configuration){
+    public void registerSubscriberPool(String id, ActorRef pool,Configuration configuration){
         put(id,['pool':pool,'configuration':configuration])
     }
     public void tellSubscribers(String id, DefaultMessage message){

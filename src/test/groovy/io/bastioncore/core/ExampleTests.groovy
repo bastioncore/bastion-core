@@ -5,6 +5,7 @@ import akka.util.Timeout
 import io.bastioncore.core.messages.DefaultMessage
 import io.bastioncore.core.messages.Messages
 import io.bastioncore.core.messages.ResponseMessage
+import io.bastioncore.core.pools.SubscriberPoolsCollector
 import io.bastioncore.core.process.impl.BasicProcess
 import org.junit.After
 import org.junit.Before
@@ -94,9 +95,15 @@ class ExampleTests {
 
     @Test
     void subTest(){
-        def configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/sub.yml'))))
+
+        Configuration configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'pools/subscriber_pools.yml'))))
+        BastionContext.instance.subscriberPoolsCollector.checkPools(configuration)
+
+        configuration = new Configuration(new Yaml().load(new FileReader(new File(BastionContext.instance.etcPath+'processes/sub.yml'))))
         BasicProcess.setup(configuration)
         Thread.sleep(1000)
+
+
         ResponseMessage resp =  BastionContext.instance.subscriberPoolsCollector.askSubscribers('foobar',new DefaultMessage('test'),'10 seconds')
         assert resp.content=='test banana'
     }

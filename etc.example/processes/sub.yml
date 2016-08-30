@@ -1,8 +1,5 @@
 id: sub
 type: simple
-subscriber_pools:
-  - id: foobar
-    timeout: 2 seconds
 
 components:
   - id: in
